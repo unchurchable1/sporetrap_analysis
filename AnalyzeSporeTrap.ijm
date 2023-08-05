@@ -15,7 +15,7 @@ setOption("BlackBackground", false);
 run("Convert to Mask", "method=Default background=Light");
 run("Fill Holes", "stack");
 // Try to separate blobs into individual chromophores
-run("Watershed");
+run("Watershed", "stack");
 saveAs("tif", "../binary_" + getTitle());
 
 // Generate ROIs
