@@ -56,12 +56,12 @@ def analyze_sporetraps(filename):
         image += 1
 
     # Write the results to the output file
-    outfile = f"../results/FinalResults_{release}.csv"
+    outfile = f"results/FinalResults_{release}.csv"
     write_headers = True
     if os.path.exists(outfile):
         write_headers = False
     with open(
-        f"../results/FinalResults_{release}.csv",
+        f"results/FinalResults_{release}.csv",
         "a",
         newline="",
     ) as csv_outfile:
@@ -78,7 +78,7 @@ def analyze_sporetraps(filename):
 # handle csv datasets
 def csv_handler(filename):
     """docstring goes here"""
-    with open(filename, "r") as csv_file:
+    with open(f"ImageJ/{filename}", "r") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
         counted = 0
@@ -103,7 +103,7 @@ def csv_handler(filename):
 
 def main(filename):
     """docstring goes here"""
-    os.chdir(os.path.dirname(sys.argv[0]))
+    os.chdir(os.path.dirname(__file__))
     analyze_sporetraps(filename)
 
 

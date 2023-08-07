@@ -107,7 +107,7 @@ def batch_process(image_folder):
 
 
 if __name__ == "__main__":
-    os.chdir(f"{os.path.dirname(sys.argv[0])}/ImageJ")
+    os.chdir(f"{os.path.dirname(__file__)}/ImageJ")
     if len(sys.argv) > 1:
         IMAGE_FOLDER = sys.argv[1]
     else:
