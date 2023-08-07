@@ -36,6 +36,7 @@ def batch_process(image_folder):
     # Iterate through the release folders
     for release_name in os.listdir(image_folder):
         if "Release" in release_name:
+            os.chdir(f"{os.path.dirname(__file__)}/ImageJ")
             # Make release folders
             os.makedirs(f"sporetraps/images/{release_name}", exist_ok=True)
             os.makedirs(f"sporetraps/results/{release_name}", exist_ok=True)
@@ -107,9 +108,8 @@ def batch_process(image_folder):
 
 
 if __name__ == "__main__":
-    os.chdir(f"{os.path.dirname(__file__)}/ImageJ")
     if len(sys.argv) > 1:
         IMAGE_FOLDER = sys.argv[1]
     else:
-        IMAGE_FOLDER = "../ECHO Images"
+        IMAGE_FOLDER = f"{os.path.dirname(__file__)}/ECHO Images"
     batch_process(IMAGE_FOLDER)
