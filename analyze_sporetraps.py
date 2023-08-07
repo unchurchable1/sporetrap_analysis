@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 #
-# This file is part of the GPM phenotyping scripts.
+# This file is part of the sporetrap analysis scripts.
 #
 # Copyright (c) 2023 Jason Toney
 #
@@ -12,7 +12,7 @@
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
+# GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
@@ -31,9 +31,12 @@ from tabulate import tabulate
 
 
 # 3 images = 1 position in a trap, 5 positions per trap
-def analyze_results(trap):
+def analyze_sporetraps(filename):
     """docstring goes here"""
-    trap_results = csv_handler(trap)
+    trap_results = csv_handler(filename)
+
+    release = os.path.basename(os.path.dirname(filename))
+    trap = os.path.basename(filename).split("_")[1]
 
     # Output data and file headers
     sporetrap_data = []
@@ -46,20 +49,25 @@ def analyze_results(trap):
     counted = 0
     for result in trap_results:
         counted += result
-        if (image % 3 == 0):
+        if image % 3 == 0:
             sporetrap_data.append([trap, position, counted])
             counted = 0
             position += 1
         image += 1
 
     # Write the results to the output file
+    outfile = f"../results/FinalResults_{release}.csv"
+    write_headers = True
+    if os.path.exists(outfile):
+        write_headers = False
     with open(
-        f"FinalResults_{trap}.csv",
-        "w",
+        f"../results/FinalResults_{release}.csv",
+        "a",
         newline="",
     ) as csv_outfile:
         csv_writer = csv.writer(csv_outfile)
-        csv_writer.writerow(headers)
+        if write_headers:
+            csv_writer.writerow(headers)
         for row in sporetrap_data:
             csv_writer.writerow(row)
 
@@ -68,17 +76,17 @@ def analyze_results(trap):
 
 
 # handle csv datasets
-def csv_handler(trap):
+def csv_handler(filename):
     """docstring goes here"""
-    with open(f"Results_{trap}_N0000.csv", "r") as csv_file:
+    with open(filename, "r") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
         counted = 0
         current_slice = 1
         for row in csv_reader:
             # Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
-            # if (float(row["Area"]) <= 7.84):
-            #      continue
+            # if float(row["Area"]) < 7.84 * 4:
+            #     continue
             # calculate totals for each image
             if int(row["Slice"]) == current_slice:
                 counted += 1
@@ -95,10 +103,8 @@ def csv_handler(trap):
 
 def main(filename):
     """docstring goes here"""
-    trap = os.path.basename(filename).split("_")[1]
-
     os.chdir(os.path.dirname(sys.argv[0]))
-    analyze_results(trap)
+    analyze_sporetraps(filename)
 
 
 if __name__ == "__main__":
