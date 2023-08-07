@@ -24,7 +24,7 @@ run("Convert to Mask", "method=Default background=Light");
 run("Fill Holes", "stack");
 // Try to separate blobs into individual chromophores
 run("Watershed", "stack");
-saveAs("tif", "sporetraps/images/" + getTitle());
+saveAs("tif", "sporetraps/images/" + File.getName(getTitle()));
 
 // Generate ROIs
 run("Set Measurements...", "area centroid perimeter fit shape feret's stack redirect=None decimal=3");
