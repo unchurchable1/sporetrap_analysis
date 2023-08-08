@@ -44,14 +44,17 @@ def analyze_sporetraps(filename):
         "Trap",
         "Position",
         "Microspheres",
+        "Uncounted ROIs",
     ]
     image, position = 1, 1
-    counted = 0
+    counted, uncounted = 0, 0
     for result in trap_results:
-        counted += result
+        counted += result[0]
+        uncounted += result[1]
         if image % 3 == 0:
-            sporetrap_data.append([trap, position, counted])
+            sporetrap_data.append([trap, position, counted, uncounted])
             counted = 0
+            uncounted = 0
             position += 1
         image += 1
 
@@ -81,24 +84,35 @@ def csv_handler(filename):
     with open(f"ImageJ/{filename}", "r") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
-        counted = 0
+        uncounted, counted = 0, 0
         current_slice = 1
         for row in csv_reader:
-            # Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
-            # if float(row["Area"]) < 7.84 * 4:
-            #     continue
             # calculate totals for each image
             if int(row["Slice"]) == current_slice:
-                counted += 1
+                if is_artifact(row):
+                    uncounted += 1
+                else:
+                    counted += 1
             else:
                 # hit the next slice, store the count
-                image_data.append(counted)
+                image_data.append([counted, uncounted])
                 current_slice += 1
-                counted = 1
+                if is_artifact(row):
+                    counted = 0
+                    uncounted = 1
+                else:
+                    counted = 1
+                    uncounted = 0
         # outside of the loop
-        image_data.append(counted)
+        image_data.append([counted, uncounted])
 
         return image_data
+
+
+# Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
+def is_artifact(row):
+    """dcostirng"""
+    return float(row["Area"]) <= 7.84 * 4
 
 
 def main(filename):

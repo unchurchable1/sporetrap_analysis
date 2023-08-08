@@ -7,9 +7,9 @@ if (lengthOf(getArgument()) > 0) {
 }
 
 // Check for RGB image
-if (bitDepth() > 16) {
+if (bitDepth() > 8) {
     // Convert to grayscale
-    run("16-bit");
+    run("8-bit");
 }
 
 // Invert colors - white bg + black ROIs
@@ -19,6 +19,7 @@ run("Invert LUT");
 run("Subtract Background...", "rolling=10 light stack");
 
 // Generate a binary image from our image stack
+setThreshold(75, 255);
 setOption("BlackBackground", false);
 run("Convert to Mask", "method=Default background=Light");
 run("Fill Holes", "stack");
