@@ -59,12 +59,12 @@ def analyze_sporetraps(filename):
         image += 1
 
     # Write the results to the output file
-    outfile = f"results/FinalResults_{release}.csv"
+    outfile = f"results/Results_{release}.csv"
     write_headers = True
     if os.path.exists(outfile):
         write_headers = False
     with open(
-        f"results/FinalResults_{release}.csv",
+        outfile,
         "a",
         newline="",
     ) as csv_outfile:
@@ -125,4 +125,4 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         main(sys.argv[1])
     else:
-        sys.exit(f"Usage: {sys.argv[0]} [FILE]")
+        sys.exit(f"Usage: {__file__} [FILE]")
