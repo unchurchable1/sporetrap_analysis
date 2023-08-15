@@ -19,10 +19,10 @@ run("Invert LUT");
 run("Subtract Background...", "rolling=10 light stack");
 
 // Generate a binary image from our image stack
-setThreshold(75, 255);
+setThreshold(35, 255);
 setOption("BlackBackground", false);
 run("Convert to Mask", "method=Default background=Light");
-run("Fill Holes", "stack");
+// run("Fill Holes", "stack");
 // Try to separate blobs into individual chromophores
 run("Watershed", "stack");
 saveAs("tif", "sporetraps/images/" + File.getName(getTitle()));
