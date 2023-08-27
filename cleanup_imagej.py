@@ -20,6 +20,7 @@
 """This script removes the files created by AnalyzeSporeTrap.ijm."""
 
 import os
+import shutil
 
 
 def cleanup_imagej():
@@ -30,12 +31,14 @@ def cleanup_imagej():
     for folder in os.listdir(f"{imagej_path}/images"):
         current_folder = os.path.join(f"{imagej_path}/images", folder)
         if os.path.isdir(current_folder):
-            os.rmdir(current_folder)
+            print(f"Removing: {current_folder}.")
+            shutil.rmtree(current_folder)
             removed += 1
     for folder in os.listdir(f"{imagej_path}/results"):
         current_folder = os.path.join(f"{imagej_path}/results", folder)
         if os.path.isdir(current_folder):
-            os.rmdir(current_folder)
+            print(f"Removing: {current_folder}.")
+            shutil.rmtree(current_folder)
             removed += 1
     print(f"Cleanup complete. Deleted {removed} Release folders.")
     input("Press ENTER to exit.\n")
