@@ -17,13 +17,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-"""docstring goes here"""
+"""This script removes the files created by AnalyzeSporeTrap.ijm."""
 
 import os
-import sys
 
 
 def cleanup_imagej():
+    """Clean up any results files that exist."""
     print("Cleaning up ImageJ files...")
     imagej_path = "ImageJ/sporetraps"
     removed = 0
@@ -38,7 +38,7 @@ def cleanup_imagej():
             os.rmdir(current_folder)
             removed += 1
     print(f"Cleanup complete. Deleted {removed} Release folders.")
-    input("Press ENTER to exit.")
+    input("Press ENTER to exit.\n")
 
 
 if __name__ == "__main__":
