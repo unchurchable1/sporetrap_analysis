@@ -1,5 +1,5 @@
 # sporetrap analysis
-This project is composed of Python scripts and ImageJ macros for use with
+This project is composed of Python scripts and ImageJ macros for use with\
 images taken for the fluorescent microsphere particle release experiment.
 
 ## License

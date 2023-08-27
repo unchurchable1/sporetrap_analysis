@@ -42,7 +42,7 @@ def analyze_sporetraps(filename):
         "Trap",
         "Position",
         "Microspheres",
-        "Uncounted ROIs",
+        # "Uncounted ROIs",
     ]
     # Combine counts for each position
     image, position = 1, 1
@@ -51,7 +51,8 @@ def analyze_sporetraps(filename):
         counted += result[0]
         uncounted += result[1]
         if image % 3 == 0:
-            sporetrap_data.append([trap, position, counted, uncounted])
+            # sporetrap_data.append([trap, position, counted, uncounted])
+            sporetrap_data.append([trap, position, counted])
             counted = 0
             uncounted = 0
             position += 1
