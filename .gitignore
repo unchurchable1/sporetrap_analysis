@@ -1,5 +1,6 @@
 *.csv
 *.tif
+*.xlsx
 
 __pycache__/
 ECHO Images/

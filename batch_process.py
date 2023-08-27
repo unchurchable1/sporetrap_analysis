@@ -20,7 +20,7 @@
 """
     This script executes the ImageJ macro and python scripts in a batch process.
     Input: all images found within the local "ECHO Images" folder.
-    Output: CSV file containing the total counts of microsphers in the images.
+    Output: CSV file containing the total counts of microspheres in the images.
 """
 
 import os
@@ -29,6 +29,7 @@ import sys
 import time
 
 import analyze_sporetraps
+import compile_workbook
 
 
 def batch_process(image_folder):
@@ -102,6 +103,9 @@ def batch_process(image_folder):
             ):
                 if file.endswith(".csv"):
                     analyze_sporetraps.main(f"sporetraps/results/{release_name}/{file}")
+
+    # Compile the results into a workbook
+    compile_workbook.main()
 
     # Calculate the elapsed time
     elapsed_time = time.time() - start_time

@@ -57,7 +57,7 @@ def analyze_sporetraps(filename):
             position += 1
         image += 1
     # Write the results to the output file
-    outfile = f"results/Results_{release}.csv"
+    outfile = f"results/{release}.csv"
     write_headers = True
     if os.path.exists(outfile):
         write_headers = False
