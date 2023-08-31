@@ -6,6 +6,7 @@ if %errorlevel% neq 0 (
     pause
     exit /b
 )
+pip3.exe install openpyxl
 pip3.exe install tabulate
 
 REM Set the download URL and destination file
