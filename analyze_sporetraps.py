@@ -42,19 +42,15 @@ def analyze_sporetraps(filename):
         "Trap",
         "Position",
         "Microspheres",
-        # "Uncounted ROIs",
     ]
     # Combine counts for each position
     image, position = 1, 1
-    counted, uncounted = 0, 0
+    counted = 0
     for result in trap_results:
-        counted += result[0]
-        uncounted += result[1]
+        counted += result
         if image % 3 == 0:
-            # sporetrap_data.append([trap, position, counted, uncounted])
             sporetrap_data.append([trap, position, counted])
             counted = 0
-            uncounted = 0
             position += 1
         image += 1
     # Write the results to the output file
@@ -83,28 +79,25 @@ def csv_handler(filename):
     with open(f"ImageJ/{filename}", "r", encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
-        uncounted, counted = 0, 0
+        counted = 0
         current_slice = 1
         for row in csv_reader:
+            # TODO: record count and size of small ROIs ~1-10 pixels
             # calculate totals for each image
             if int(row["Slice"]) == current_slice:
-                if is_artifact(row):
-                    uncounted += 1
-                else:
+                if not is_artifact(row):
                     counted += 1
             else:
                 # hit the next slice, store the count
-                image_data.append([counted, uncounted])
+                image_data.append(counted)
                 # don't assume what the "next" slice is, a slice could be missing/empty
                 current_slice = int(row["Slice"])
                 if is_artifact(row):
                     counted = 0
-                    uncounted = 1
                 else:
                     counted = 1
-                    uncounted = 0
         # outside of the loop
-        image_data.append([counted, uncounted])
+        image_data.append(counted)
         return image_data
 
 
