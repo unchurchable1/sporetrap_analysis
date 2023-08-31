@@ -37,11 +37,9 @@ def analyze_sporetraps(filename):
     trap = os.path.basename(filename).split("_")[1]
     trap_results = csv_handler(filename)
     # make sure each trap has the correct number of images
-    image_count = len(trap_results)
+    image_count = len(trap_results[0])
     if image_count != 15:
-        sys.exit(
-            f"ERROR: Release {release}: Trap {trap} contains {image_count} images."
-        )
+        sys.exit(f"ERROR: {release}: Trap {trap} contains {image_count} images.")
     # Output data and file headers
     sporetrap_data = []
     headers = [
@@ -52,7 +50,7 @@ def analyze_sporetraps(filename):
     # Combine counts for each position
     image, position = 1, 1
     counted = 0
-    for result in trap_results:
+    for result in trap_results[0]:
         counted += result
         if image % 3 == 0:
             sporetrap_data.append([trap, position, counted])
@@ -77,6 +75,10 @@ def analyze_sporetraps(filename):
             csv_writer.writerow(row)
     # Print a table of the results for the user
     # print(tabulate(sporetrap_data, headers=headers))
+    # Print counts of small ROIs
+    print(f"Trap: {trap}")
+    for i in range(10):
+        print(f"{i + 1} pixel ROI count: {trap_results[1][i]}")
 
 
 # handle csv datasets
@@ -85,10 +87,14 @@ def csv_handler(filename):
     with open(f"ImageJ/{filename}", "r", encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
+        small_data = [0] * 10
         counted = 0
         current_slice = 1
         for row in csv_reader:
-            # TODO: record count and size of small ROIs ~1-10 pixels
+            # record count and size of small ROIs ~1-10 pixels
+            for i in range(10):
+                if float(row["Area"]) == 7.84 * (i + 1):
+                    small_data[i] += 1
             # calculate totals for each image
             if int(row["Slice"]) == current_slice:
                 if not is_artifact(row):
@@ -104,7 +110,7 @@ def csv_handler(filename):
                     counted = 1
         # outside of the loop
         image_data.append(counted)
-        return image_data
+        return image_data, small_data
 
 
 # Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
