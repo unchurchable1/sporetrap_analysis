@@ -76,7 +76,7 @@ def analyze_sporetraps(filename):
         for row in sporetrap_data:
             csv_writer.writerow(row)
     # Print a table of the results for the user
-    print(tabulate(sporetrap_data, headers=headers))
+    # print(tabulate(sporetrap_data, headers=headers))
 
 
 # handle csv datasets
