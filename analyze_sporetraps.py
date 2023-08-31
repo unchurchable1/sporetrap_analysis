@@ -33,9 +33,15 @@ from tabulate import tabulate
 # 3 images = 1 position in a trap, 5 positions per trap
 def analyze_sporetraps(filename):
     """Total the counts for each position and write the results to an output file."""
-    trap_results = csv_handler(filename)
     release = os.path.basename(os.path.dirname(filename))
     trap = os.path.basename(filename).split("_")[1]
+    trap_results = csv_handler(filename)
+    # make sure each trap has the correct number of images
+    image_count = len(trap_results)
+    if image_count != 15:
+        sys.exit(
+            f"ERROR: Release {release}: Trap {trap} contains {image_count} images."
+        )
     # Output data and file headers
     sporetrap_data = []
     headers = [
