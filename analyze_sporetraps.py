@@ -73,6 +73,17 @@ def analyze_sporetraps(filename):
             csv_writer.writerow(headers)
         for row in sporetrap_data:
             csv_writer.writerow(row)
+    # Write small ROI data to the output file
+    outfile = f"results/{release}_smallrois.csv"
+    with open(
+        outfile,
+        "a",
+        newline="",
+        encoding="utf-8",
+    ) as csv_outfile:
+        csv_writer = csv.writer(csv_outfile)
+        for row in trap_results[2]:
+            csv_writer.writerow(row)
     # Print a table of the results for the user
     # print(tabulate(sporetrap_data, headers=headers))
     # Print counts of small ROIs
@@ -87,14 +98,17 @@ def csv_handler(filename):
     with open(f"ImageJ/{filename}", "r", encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
-        small_data = [0] * 10
+        small_data = [csv_reader.fieldnames]
+        small_rois = [0] * 10
         counted = 0
         current_slice = 1
         for row in csv_reader:
             # record count and size of small ROIs ~1-10 pixels
             for i in range(10):
                 if float(row["Area"]) == 7.84 * (i + 1):
-                    small_data[i] += 1
+                    small_rois[i] += 1
+                    # record shape descriptors for small ROIs
+                    small_data.append(row.values())
             # calculate totals for each image
             if int(row["Slice"]) == current_slice:
                 if not is_artifact(row):
@@ -110,7 +124,7 @@ def csv_handler(filename):
                     counted = 1
         # outside of the loop
         image_data.append(counted)
-        return image_data, small_data
+        return image_data, small_rois, small_data
 
 
 # Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
