@@ -32,18 +32,13 @@ def cleanup_imagej():
         if file.endswith(".csv"):
             os.remove(f"results/{file}")
             removed_files += 1
-    for folder in os.listdir(f"{imagej_path}/images"):
-        current_folder = os.path.join(f"{imagej_path}/images", folder)
-        if os.path.isdir(current_folder):
-            print(f"Removing: {current_folder}.")
-            shutil.rmtree(current_folder)
-            removed_folders += 1
-    for folder in os.listdir(f"{imagej_path}/results"):
-        current_folder = os.path.join(f"{imagej_path}/results", folder)
-        if os.path.isdir(current_folder):
-            print(f"Removing: {current_folder}.")
-            shutil.rmtree(current_folder)
-            removed_folders += 1
+    for folder in "images", "results":
+        for release in os.listdir(f"{imagej_path}/{folder}"):
+            current_folder = os.path.join(f"{imagej_path}/{folder}", release)
+            if os.path.isdir(current_folder):
+                print(f"Removing: {current_folder}.")
+                shutil.rmtree(current_folder)
+                removed_folders += 1
     print("Cleanup complete.")
     print(f"Deleted {removed_files} Results files.")
     print(f"Deleted {removed_folders} Release folders.")
