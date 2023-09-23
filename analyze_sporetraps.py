@@ -27,15 +27,17 @@ import csv
 import os
 import sys
 
-# from tabulate import tabulate
-
 
 # 3 images = 1 position in a trap, 4-5 positions per trap
 def analyze_sporetraps(filename):
     """Total the counts for each position and write the results to an output file."""
     release = os.path.basename(os.path.dirname(filename))
+    # if there is a color specified, use it; current options: G/R
+    color = release[-1]
+    if color != "G" and color != "R":
+        color = "NA"
     trap = os.path.basename(filename).split("_")[1]
-    trap_results = csv_handler(filename)
+    trap_results = csv_handler(filename, color)
     # make sure each trap has the correct number of images, 12 or 15 depending on release
     image_count = len(trap_results)
     if image_count % 3 != 0:
@@ -47,6 +49,9 @@ def analyze_sporetraps(filename):
         "Position",
         "Microspheres",
     ]
+    # particle size is tracked for Red microspheres
+    if color == "R":
+        headers.extend(["< X um", "> X um")
     # Combine counts for each position
     image, position = 1, 1
     counted = 0
@@ -73,12 +78,10 @@ def analyze_sporetraps(filename):
             csv_writer.writerow(headers)
         for row in sporetrap_data:
             csv_writer.writerow(row)
-    # Print a table of the results for the user
-    # print(tabulate(sporetrap_data, headers=headers))
 
 
 # handle csv datasets
-def csv_handler(filename):
+def csv_handler(filename, color):
     """Count the microspheres and drop any bad ROIs."""
     with open(f"ImageJ/{filename}", "r", encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
