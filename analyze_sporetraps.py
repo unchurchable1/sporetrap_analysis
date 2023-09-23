@@ -34,10 +34,10 @@ def analyze_sporetraps(filename):
     release = os.path.basename(os.path.dirname(filename))
     # if there is a color specified, use it; current options: G/R
     color = release[-1]
-    if color != "G" and color != "R":
+    if color not in ("G", "R"):
         color = "NA"
     trap = os.path.basename(filename).split("_")[1]
-    trap_results = csv_handler(filename, color)
+    trap_results = csv_handler(filename)
     # make sure each trap has the correct number of images, 12 or 15 depending on release
     image_count = len(trap_results)
     if image_count % 3 != 0:
@@ -51,15 +51,22 @@ def analyze_sporetraps(filename):
     ]
     # particle size is tracked for Red microspheres
     if color == "R":
-        headers.extend("< X um", "> X um")
+        headers.extend(["< 50 um", "> 50 um"])
     # Combine counts for each position
     image, position = 1, 1
-    counted = 0
+    counted, oversized = 0, 0
     for result in trap_results:
-        counted += result
+        counted += result[0]
+        oversized += result[1]
         if image % 3 == 0:
-            sporetrap_data.append([trap, position, counted])
+            if color == "R":
+                sporetrap_data.append(
+                    [trap, position, counted, counted - oversized, oversized]
+                )
+            else:
+                sporetrap_data.append([trap, position, counted])
             counted = 0
+            oversized = 0
             position += 1
         image += 1
     # Write the results to the output file
@@ -81,29 +88,36 @@ def analyze_sporetraps(filename):
 
 
 # handle csv datasets
-def csv_handler(filename, color):
+def csv_handler(filename):
     """Count the microspheres and drop any bad ROIs."""
     with open(f"ImageJ/{filename}", "r", encoding="utf-8") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
-        counted = 0
+        counted, oversized = 0, 0
         current_slice = 1
         for row in csv_reader:
             # calculate totals for each image
             if int(row["Slice"]) == current_slice:
                 if not is_artifact(row):
                     counted += 1
+                    if float(row["Feret"]) > 50:
+                        oversized += 1
             else:
                 # hit the next slice, store the count
-                image_data.append(counted)
+                image_data.append([counted, oversized])
                 # don't assume what the "next" slice is, a slice could be missing/empty
                 current_slice = int(row["Slice"])
                 if is_artifact(row):
                     counted = 0
+                    oversized = 0
                 else:
                     counted = 1
+                    if float(row["Feret"]) > 50:
+                        oversized = 1
+                    else:
+                        oversized = 0
         # outside of the loop
-        image_data.append(counted)
+        image_data.append([counted, oversized])
     return image_data
 
 
