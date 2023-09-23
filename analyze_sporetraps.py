@@ -51,7 +51,7 @@ def analyze_sporetraps(filename):
     ]
     # particle size is tracked for Red microspheres
     if color == "R":
-        headers.extend(["< X um", "> X um")
+        headers.extend("< X um", "> X um")
     # Combine counts for each position
     image, position = 1, 1
     counted = 0
