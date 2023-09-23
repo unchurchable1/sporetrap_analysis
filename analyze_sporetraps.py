@@ -59,12 +59,9 @@ def analyze_sporetraps(filename):
         counted += result[0]
         oversized += result[1]
         if image % 3 == 0:
+            sporetrap_data.append([trap, position, counted])
             if color == "R":
-                sporetrap_data.append(
-                    [trap, position, counted, counted - oversized, oversized]
-                )
-            else:
-                sporetrap_data.append([trap, position, counted])
+                sporetrap_data[-1].extend([counted - oversized, oversized])
             counted = 0
             oversized = 0
             position += 1
