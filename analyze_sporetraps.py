@@ -101,7 +101,7 @@ def csv_handler(filename):
                     counted = 1
         # outside of the loop
         image_data.append(counted)
-        return image_data
+    return image_data
 
 
 # Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
