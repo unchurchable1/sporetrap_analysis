@@ -40,7 +40,10 @@ def batch_process(image_folder):
     # Count how many albums are processed
     processed = 0
     # Clean out any stale results files
-    [os.remove(file) for file in glob.glob(os.path.join(f"{os.path.dirname(__file__)}/results", "*"))]
+    _ = [
+        os.remove(file)
+        for file in glob.glob(os.path.join(f"{os.path.dirname(__file__)}/results", "*"))
+    ]
     # Iterate through the release folders
     for release_name in os.listdir(image_folder):
         if "Release" in release_name:
