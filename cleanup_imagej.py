@@ -27,11 +27,7 @@ def cleanup_imagej():
     """Clean up any results files that exist."""
     print("Cleaning up ImageJ files...")
     imagej_path = "ImageJ/sporetraps"
-    removed_files, removed_folders = 0, 0
-    for file in os.listdir(f"results"):
-        if file.endswith(".csv"):
-            os.remove(f"results/{file}")
-            removed_files += 1
+    removed_folders = 0
     for folder in "images", "results":
         for release in os.listdir(f"{imagej_path}/{folder}"):
             current_folder = os.path.join(f"{imagej_path}/{folder}", release)
@@ -40,7 +36,6 @@ def cleanup_imagej():
                 shutil.rmtree(current_folder)
                 removed_folders += 1
     print("Cleanup complete.")
-    print(f"Deleted {removed_files} Results files.")
     print(f"Deleted {removed_folders} Release folders.")
     input("Press ENTER to exit.\n")
 
