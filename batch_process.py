@@ -87,20 +87,16 @@ def batch_process(image_folder):
                     print(f"Error executing the macro: {exception}")
 
                 # Relocate output files into their respective release folders
-                for file in os.listdir("sporetraps/images"):
-                    if file.startswith(trap_name) and file.endswith(".tif"):
-                        os.rename(
-                            f"sporetraps/images/{file}",
-                            f"sporetraps/images/{release_name}/{file}",
-                        )
-                for file in os.listdir("sporetraps/results"):
-                    if file.startswith(f"Results_{trap_name}") and file.endswith(
-                        ".csv"
-                    ):
-                        os.rename(
-                            f"sporetraps/results/{file}",
-                            f"sporetraps/results/{release_name}/{file}",
-                        )
+                if os.path.exists(f"sporetraps/images/{trap_name}_N0000.tif"):
+                    os.rename(
+                        f"sporetraps/images/{trap_name}_N0000.tif",
+                        f"sporetraps/images/{release_name}/{trap_name}_N0000.tif"
+                    )
+                if os.path.exists(f"sporetraps/results/Results_{trap_name}_N0000.csv"):
+                    os.rename(
+                        f"sporetraps/results/Results_{trap_name}_N0000.csv",
+                        f"sporetraps/results/{release_name}/Results_{trap_name}_N0000.csv",
+                    )
 
             # Process the ImageJ results
             for file in sorted(
