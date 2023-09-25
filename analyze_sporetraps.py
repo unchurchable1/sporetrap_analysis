@@ -51,7 +51,7 @@ def analyze_sporetraps(filename):
     ]
     # particle size is tracked for Red microspheres
     if color == "R":
-        headers.extend(["< 50 um", "> 50 um"])
+        headers.extend(["< 200 um", "> 200 um"])
     # Combine counts for each position
     image, position = 1, 1
     counted, oversized = 0, 0
@@ -97,7 +97,7 @@ def csv_handler(filename):
             if int(row["Slice"]) == current_slice:
                 if not is_artifact(row):
                     counted += 1
-                    if float(row["Feret"]) > 50:
+                    if float(row["Feret"]) > 200:
                         oversized += 1
             else:
                 # hit the next slice, store the count
@@ -109,7 +109,7 @@ def csv_handler(filename):
                     oversized = 0
                 else:
                     counted = 1
-                    if float(row["Feret"]) > 50:
+                    if float(row["Feret"]) > 200:
                         oversized = 1
                     else:
                         oversized = 0
