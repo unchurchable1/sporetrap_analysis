@@ -90,7 +90,7 @@ def batch_process(image_folder):
                 if os.path.exists(f"sporetraps/images/{trap_name}_N0000.tif"):
                     os.rename(
                         f"sporetraps/images/{trap_name}_N0000.tif",
-                        f"sporetraps/images/{release_name}/{trap_name}_N0000.tif"
+                        f"sporetraps/images/{release_name}/{trap_name}_N0000.tif",
                     )
                 if os.path.exists(f"sporetraps/results/Results_{trap_name}_N0000.csv"):
                     os.rename(
