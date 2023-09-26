@@ -54,6 +54,9 @@ def analyze_sporetraps(filename):
         headers.extend(["< 200 um", "> 200 um"])
     # Combine counts for each position
     image, position = 1, 1
+    # 4 position traps start at position 2
+    if image_count == 12:
+        position = 2
     counted, oversized = 0, 0
     for result in trap_results:
         counted += result[0]
