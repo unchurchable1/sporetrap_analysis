@@ -31,6 +31,7 @@ import time
 
 import analyze_sporetraps
 import compile_workbook
+import format_workbook
 
 
 def batch_process(image_folder):
@@ -108,6 +109,9 @@ def batch_process(image_folder):
 
     # Compile the results into a workbook
     compile_workbook.main()
+
+    # Reformat the workbook
+    format_workbook.main("SporeTrap_Workbook.xlsx")
 
     # Calculate the elapsed time
     elapsed_time = time.time() - start_time
