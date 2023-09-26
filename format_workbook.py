@@ -30,7 +30,7 @@ def format_workbook(filename):
         "2": "00FF00",  # Green
         "3": "0000FF",  # Blue
         "4": "C0C0C0",  # Silver
-        "5": "FFD700"   # Gold
+        "5": "FFD700",  # Gold
     }
 
     # Load the Excel file
@@ -39,7 +39,7 @@ def format_workbook(filename):
     # Iterate through each sheet in the workbook
     for sheet_name in workbook.sheetnames:
         sheet = workbook[sheet_name]
-    
+
         # Find the column index of "Position" (assuming it's in the first row)
         position_column_index = None
         for col_index, cell in enumerate(sheet[1], start=1):
@@ -50,7 +50,9 @@ def format_workbook(filename):
         # Check if "Position" column was found
         if position_column_index is not None:
             # Iterate through rows starting from the second row (assuming headers are in the first row)
-            for row in sheet.iter_rows(min_row=2, min_col=position_column_index, max_col=position_column_index):
+            for row in sheet.iter_rows(
+                min_row=2, min_col=position_column_index, max_col=position_column_index
+            ):
                 for cell in row:
                     cell_value = str(cell.value)  # Convert cell value to string
                     if cell_value in value_color_mapping:
@@ -64,6 +66,7 @@ def format_workbook(filename):
     workbook.close()
 
     print(f"Workbook: {filename} has been reformatted.")
+
 
 def main(filename):
     """Execute main objective."""
