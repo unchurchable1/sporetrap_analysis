@@ -1,3 +1,5 @@
+*.csv
+!notes/Example Release Notes.csv
 *.tif
 *.xlsx
 
