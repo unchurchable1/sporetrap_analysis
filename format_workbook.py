@@ -21,6 +21,7 @@
     docstring
 """
 
+import csv
 import os
 import sys
 import openpyxl
@@ -50,6 +51,30 @@ def add_colors(sheet, position_column_index):
                 cell.font = Font(color=font_color)
 
 
+def add_notations(notes_file, sheet, trap_column_index, position_column_index):
+    """docstring"""
+    # Load up the notations
+    matching_values = []
+    with open(notes_file, "r", encoding="utf-8", newline="") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            matching_values.append(row)
+
+    # Iterate through rows
+    for row in sheet.iter_rows(
+        min_row=2, min_col=trap_column_index, max_col=position_column_index
+    ):
+        trap_value = row[0].value
+        position_value = str(row[1].value)
+        # Add notations if available
+        for match_data in matching_values:
+            if (
+                match_data["Trap"] == trap_value
+                and match_data["Position"] == position_value
+            ):
+                sheet.cell(row=row[0].row, column=4, value=match_data["Notes"])
+
+
 def format_workbook(filename):
     """docstring"""
     # Load the Excel file
@@ -60,14 +85,22 @@ def format_workbook(filename):
         sheet = workbook[sheet_name]
 
         # Find the column index of "Position"
-        position_column_index = None
+        position_column_index, trap_column_index = None, None
         for col_index, cell in enumerate(sheet[1], start=1):
-            if cell.value == "Position":
+            if cell.value == "Trap":
+                trap_column_index = col_index
+            elif cell.value == "Position":
                 position_column_index = col_index
+            if trap_column_index and position_column_index:
                 break
 
         # Add colors to the position column
         add_colors(sheet, position_column_index)
+
+        # Add any relevant notations to the workbook
+        notes_file = f"{os.path.dirname(__file__)}/notes/{sheet_name}.csv"
+        if os.path.exists(notes_file):
+            add_notations(notes_file, sheet, trap_column_index, position_column_index)
 
     # Save the modified workbook in-place
     workbook.save(filename)

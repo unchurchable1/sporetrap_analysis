@@ -48,6 +48,7 @@ def analyze_sporetraps(filename):
         "Trap",
         "Position",
         "Microspheres",
+        "Notes",
     ]
     # particle size is tracked for Red microspheres
     if color == "R":
