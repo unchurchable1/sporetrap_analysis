@@ -25,7 +25,7 @@ import csv
 import os
 import sys
 import openpyxl
-from openpyxl.styles import Font
+from openpyxl.styles import Font, Alignment
 
 
 def add_colors(sheet):
@@ -68,7 +68,9 @@ def add_notations(notes_file, sheet):
                 match_data["Trap"] == trap_value
                 and match_data["Position"] == position_value
             ):
-                sheet.cell(row=row[0].row, column=4, value=match_data["Notes"])
+                sheet.cell(
+                    row=row[0].row, column=4, value=match_data["Notes"]
+                ).alignment = Alignment(wrap_text=True)
 
 
 def autosize_columns(sheet):
