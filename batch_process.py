@@ -45,6 +45,10 @@ def batch_process(image_folder):
         os.remove(file)
         for file in glob.glob(os.path.join(f"{os.path.dirname(__file__)}/results", "*"))
     ]
+    # Also nuke old workbooks
+    workbook_file = f"{os.path.dirname(__file__)}/SporeTrap_Workbook.xlsx"
+    if os.path.exists(workbook_file):
+        os.remove(workbook_file)
     # Iterate through the release folders
     for release_name in os.listdir(image_folder):
         if "Release" in release_name:
@@ -111,7 +115,7 @@ def batch_process(image_folder):
     compile_workbook.main()
 
     # Reformat the workbook
-    format_workbook.main("SporeTrap_Workbook.xlsx")
+    format_workbook.main(workbook_file)
 
     # Calculate the elapsed time
     elapsed_time = time.time() - start_time
