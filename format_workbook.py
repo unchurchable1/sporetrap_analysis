@@ -28,7 +28,7 @@ import openpyxl
 from openpyxl.styles import Font
 
 
-def add_colors(sheet, position_column_index):
+def add_colors(sheet):
     """docstring"""
     # Create a dictionary to map values to font colors
     value_color_mapping = {
@@ -40,18 +40,16 @@ def add_colors(sheet, position_column_index):
     }
 
     # Iterate through rows starting from the second row
-    for row in sheet.iter_rows(
-        min_row=2, min_col=position_column_index, max_col=position_column_index
-    ):
+    for row in sheet.iter_rows(min_row=2, min_col=2, max_col=2):
         for cell in row:
-            cell_value = str(cell.value)  # Convert cell value to string
+            cell_value = str(cell.value)
             if cell_value in value_color_mapping:
                 # Change the font color based on the value
                 font_color = value_color_mapping[cell_value]
                 cell.font = Font(color=font_color)
 
 
-def add_notations(notes_file, sheet, trap_column_index, position_column_index):
+def add_notations(notes_file, sheet):
     """docstring"""
     # Load up the notations
     matching_values = []
@@ -61,9 +59,7 @@ def add_notations(notes_file, sheet, trap_column_index, position_column_index):
             matching_values.append(row)
 
     # Iterate through rows
-    for row in sheet.iter_rows(
-        min_row=2, min_col=trap_column_index, max_col=position_column_index
-    ):
+    for row in sheet.iter_rows(min_row=2, min_col=1, max_col=2):
         trap_value = row[0].value
         position_value = str(row[1].value)
         # Add notations if available
@@ -101,23 +97,13 @@ def format_workbook(filename):
     for sheet_name in workbook.sheetnames:
         sheet = workbook[sheet_name]
 
-        # Find the column index of "Position"
-        position_column_index, trap_column_index = None, None
-        for col_index, cell in enumerate(sheet[1], start=1):
-            if cell.value == "Trap":
-                trap_column_index = col_index
-            elif cell.value == "Position":
-                position_column_index = col_index
-            if trap_column_index and position_column_index:
-                break
-
         # Add colors to the position column
-        add_colors(sheet, position_column_index)
+        add_colors(sheet)
 
         # Add any relevant notations to the workbook
         notes_file = f"{os.path.dirname(__file__)}/notes/{sheet_name}.csv"
         if os.path.exists(notes_file):
-            add_notations(notes_file, sheet, trap_column_index, position_column_index)
+            add_notations(notes_file, sheet)
 
         # Auto-size columns to fit content
         autosize_columns(sheet)
