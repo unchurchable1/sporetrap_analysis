@@ -79,16 +79,17 @@ def autosize_columns(sheet):
     """docstring"""
     for column in sheet.columns:
         max_length = 0
-        column_letter = openpyxl.utils.get_column_letter(column[0].column)  # Get column letter
+        column_letter = openpyxl.utils.get_column_letter(
+            column[0].column
+        )  # Get column letter
         for cell in column:
             try:  # Avoid error on empty cells
                 if len(str(cell.value)) > max_length:
                     max_length = len(cell.value)
             except:
                 pass
-        adjusted_width = (max_length + 2)
+        adjusted_width = max_length + 2
         sheet.column_dimensions[column_letter].width = adjusted_width
-
 
 
 def format_workbook(filename):
