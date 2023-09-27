@@ -17,13 +17,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+    docstring
+"""
+
 import os
 import sys
 import openpyxl
 from openpyxl.styles import Font
 
 
-def format_workbook(filename):
+def add_colors(sheet, position_column_index):
+    """docstring"""
     # Create a dictionary to map values to font colors
     value_color_mapping = {
         "1": "FF0000",  # Red
@@ -33,6 +38,20 @@ def format_workbook(filename):
         "5": "FFD700",  # Gold
     }
 
+    # Iterate through rows starting from the second row
+    for row in sheet.iter_rows(
+        min_row=2, min_col=position_column_index, max_col=position_column_index
+    ):
+        for cell in row:
+            cell_value = str(cell.value)  # Convert cell value to string
+            if cell_value in value_color_mapping:
+                # Change the font color based on the value
+                font_color = value_color_mapping[cell_value]
+                cell.font = Font(color=font_color)
+
+
+def format_workbook(filename):
+    """docstring"""
     # Load the Excel file
     workbook = openpyxl.load_workbook(filename)
 
@@ -40,32 +59,22 @@ def format_workbook(filename):
     for sheet_name in workbook.sheetnames:
         sheet = workbook[sheet_name]
 
-        # Find the column index of "Position" (assuming it's in the first row)
+        # Find the column index of "Position"
         position_column_index = None
         for col_index, cell in enumerate(sheet[1], start=1):
             if cell.value == "Position":
                 position_column_index = col_index
                 break
 
-        # Check if "Position" column was found
-        if position_column_index is not None:
-            # Iterate through rows starting from the second row (assuming headers are in the first row)
-            for row in sheet.iter_rows(
-                min_row=2, min_col=position_column_index, max_col=position_column_index
-            ):
-                for cell in row:
-                    cell_value = str(cell.value)  # Convert cell value to string
-                    if cell_value in value_color_mapping:
-                        # Change the font color based on the value
-                        font_color = value_color_mapping[cell_value]
-                        cell.font = Font(color=font_color)
+        # Add colors to the position column
+        add_colors(sheet, position_column_index)
 
     # Save the modified workbook in-place
     workbook.save(filename)
     # Close the workbook
     workbook.close()
 
-    print(f"Workbook: {filename} has been reformatted.")
+    print(f"Workbook: {os.path.basename(filename)} has been reformatted.")
 
 
 def main(filename):
