@@ -105,6 +105,7 @@ def format_workbook(filename):
         # Add any relevant notations to the workbook
         notes_file = f"{os.path.dirname(__file__)}/notes/{sheet_name}.csv"
         if os.path.exists(notes_file):
+            print(f"Annotating sheet {sheet_name}")
             add_notations(notes_file, sheet)
 
         # Auto-size columns to fit content

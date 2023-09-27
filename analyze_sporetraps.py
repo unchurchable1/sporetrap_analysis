@@ -48,11 +48,12 @@ def analyze_sporetraps(filename):
         "Trap",
         "Position",
         "Microspheres",
-        "Notes",
     ]
     # particle size is tracked for Red microspheres
     if color == "R":
         headers.extend(["< 200 um", "> 200 um"])
+    # Keep notes section in the final column
+    headers.append("Notes")
     # Combine counts for each position
     image, position = 1, 1
     # 4 position traps start at position 2
