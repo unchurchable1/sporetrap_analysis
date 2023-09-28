@@ -49,8 +49,12 @@ def add_colors(sheet):
                 cell.font = Font(color=font_color)
 
 
-def add_notations(notes_file, sheet):
+def add_notations(microspheres, notes_file, sheet):
     """docstring"""
+    # Red microspheres have size recorded in the 2 columns preceding "Notes"
+    notes_column = 4
+    if microspheres == "R":
+        notes_column += 2
     # Load up the notations
     matching_values = []
     with open(notes_file, "r", encoding="utf-8", newline="") as csvfile:
@@ -69,7 +73,7 @@ def add_notations(notes_file, sheet):
                 and match_data["Position"] == position_value
             ):
                 sheet.cell(
-                    row=row[0].row, column=4, value=match_data["Notes"]
+                    row=row[0].row, column=notes_column, value=match_data["Notes"]
                 ).alignment = Alignment(wrap_text=True)
 
 
@@ -106,7 +110,8 @@ def format_workbook(filename):
         notes_file = f"{os.path.dirname(__file__)}/notes/{sheet_name}.csv"
         if os.path.exists(notes_file):
             print(f"Annotating sheet {sheet_name}")
-            add_notations(notes_file, sheet)
+            microspheres = sheet_name[-1]
+            add_notations(microspheres, notes_file, sheet)
 
         # Auto-size columns to fit content
         autosize_columns(sheet)
