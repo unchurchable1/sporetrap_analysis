@@ -32,11 +32,11 @@ def add_colors(sheet):
     """docstring"""
     # Create a dictionary to map values to font colors
     value_color_mapping = {
-        "1": "FF0000",  # Red
-        "2": "00FF00",  # Green
-        "3": "0000FF",  # Blue
-        "4": "C0C0C0",  # Silver
-        "5": "FFD700",  # Gold
+        "0": "FF0000",  # Red
+        "0.5": "00FF00",  # Green
+        "1.0": "0000FF",  # Blue
+        "1.5": "C0C0C0",  # Silver
+        "3.0": "FFD700",  # Gold
     }
 
     # Iterate through rows starting from the second row
