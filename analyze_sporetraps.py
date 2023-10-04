@@ -109,7 +109,7 @@ def csv_handler(filename):
 def is_artifact(row):
     """Returns whether or not the ROI should be counted."""
     return float(row["Area"]) <= 7.84 * 4 or (
-        not 135 <= float(row["Y"]) <= 2125 and not 3575 <= float(row["Y"]) <= 5565
+        not 75 <= float(row["Y"]) <= 2175 and not 3575 <= float(row["Y"]) <= 5575
     )
 
 
