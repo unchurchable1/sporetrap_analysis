@@ -70,9 +70,7 @@ def add_manual_counts(counts_file, sheet):
                 match_data["Trap"] == trap_value
                 and match_data["Position"] == position_value
             ):
-                sheet.cell(
-                    row=row[0].row, column=4, value=match_data["Microspheres"]
-                )
+                sheet.cell(row=row[0].row, column=4, value=match_data["Microspheres"])
 
 
 def add_notations(notes_file, sheet):
@@ -126,7 +124,7 @@ def format_workbook(filename):
         sheet = workbook[sheet_name]
 
         # Add manually counted microspheres to the workbook
-        counts_file = f"{os.path.dirname(__file__)}/hand_counts/{sheet_name} - Red Counts.csv"
+        counts_file = f"{os.path.dirname(__file__)}/counts/{sheet_name} - Red.csv"
         if os.path.exists(counts_file):
             print(f"Adding manually counted microspheres to sheet {sheet_name}")
             add_manual_counts(counts_file, sheet)
