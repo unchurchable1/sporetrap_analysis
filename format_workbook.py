@@ -71,7 +71,7 @@ def add_manual_counts(counts_file, sheet):
                 and match_data["Position"] == position_value
             ):
                 sheet.cell(
-                    row=row[0].row, column=5, value=match_data["Microspheres"]
+                    row=row[0].row, column=4, value=match_data["Microspheres"]
                 )
 
 
@@ -95,7 +95,7 @@ def add_notations(notes_file, sheet):
                 and match_data["Position"] == position_value
             ):
                 sheet.cell(
-                    row=row[0].row, column=4, value=match_data["Notes"]
+                    row=row[0].row, column=5, value=match_data["Notes"]
                 ).alignment = Alignment(wrap_text=True)
 
 

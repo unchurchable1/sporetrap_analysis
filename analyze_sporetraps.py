@@ -44,9 +44,8 @@ def analyze_sporetraps(filename):
         "Trap",
         "Position",
         "Microspheres (G)",
+        "Microspheres (R) < 500 um",
         "Notes",
-        "Microspheres (R)",
-        "> 500 um",
     ]
     # Combine counts for each position
     image, position = 1, 1
