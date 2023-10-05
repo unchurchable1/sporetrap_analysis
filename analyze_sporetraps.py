@@ -44,7 +44,7 @@ def analyze_sporetraps(filename):
         "Trap",
         "Position",
         "Microspheres (G)",
-        "Microspheres (R) < 500 um",
+        "Microspheres (R)",
         "Notes",
     ]
     # Combine counts for each position
@@ -107,7 +107,7 @@ def csv_handler(filename):
 
 # Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
 def is_artifact(row):
-    """Returns whether or not the ROI should be counted."""
+    """Returns true if the ROI should not be counted."""
     return float(row["Area"]) <= 7.84 * 4 or (
         not 75 <= float(row["Y"]) <= 2175 and not 3575 <= float(row["Y"]) <= 5575
     )

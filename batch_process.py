@@ -46,7 +46,7 @@ def batch_process(image_folder):
         for file in glob.glob(os.path.join(f"{os.path.dirname(__file__)}/results", "*"))
     ]
     # Also nuke old workbooks
-    workbook_file = f"{os.path.dirname(__file__)}/SporeTrap_Workbook.xlsx"
+    workbook_file = f"{os.path.dirname(__file__)}/Particle Release Counts.xlsx"
     if os.path.exists(workbook_file):
         os.remove(workbook_file)
     # Iterate through the release folders

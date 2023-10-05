@@ -40,7 +40,7 @@ REM Done!
 echo ImageJ has been downloaded and unpacked successfully.
 
 REM make required subfolders
-mkdir "..\ECHO Images" ..\hand_counts ..\results ..\ImageJ\sporetraps\images ..\ImageJ\sporetraps\results
+mkdir "..\ECHO Images" ..\results ..\ImageJ\sporetraps\images ..\ImageJ\sporetraps\results
 
 echo Setup Complete!
 

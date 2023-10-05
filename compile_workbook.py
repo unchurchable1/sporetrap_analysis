@@ -73,7 +73,7 @@ def main():
     os.chdir(os.path.dirname(__file__))
 
     # output file
-    workbook_file = "SporeTrap_Workbook.xlsx"
+    workbook_file = "Particle Release Counts.xlsx"
 
     # Get list of all usable csv files in the results directory
     csv_files = []
