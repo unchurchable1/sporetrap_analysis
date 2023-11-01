@@ -64,7 +64,7 @@ def batch_process(image_folder):
                 )
                 # Clean out unnecessary extraneous files
                 for file in os.listdir(current_trap):
-                    if not file.startswith("Tile0") and not file.endswith(".jpg"):
+                    if not (file.startswith("Tile0") and file.endswith(".tif")):
                         os.remove(f"{current_trap}/{file}")
                 # Check if the album has already been processed
                 if os.path.exists(
