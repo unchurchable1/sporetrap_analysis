@@ -1,8 +1,8 @@
-// Open image from arguments if available
+// Open image stack from arguments if available
 var closeWindow = false;
 if (lengthOf(getArgument()) > 0) {
-	// Open the image
-	open(getArgument());
+	// Open the virtual stack of images
+	open(getArgument(), "virtual");
 	closeWindow = true;
 }
 
