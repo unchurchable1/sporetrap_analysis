@@ -13,15 +13,15 @@ if (bitDepth() > 8) {
 }
 
 // Invert colors - white bg + black ROIs
-run("Invert LUT");
+run("Invert LUTs");
 
 // Subtract background from image stack
 run("Subtract Background...", "rolling=10 light stack");
 
 // Generate a binary image from our image stack
-setThreshold(35, 255);
+setThreshold(35, 255, "raw");
 setOption("BlackBackground", false);
-run("Convert to Mask", "method=Default background=Light");
+run("Convert to Mask", "background=Light");
 run("Fill Holes", "stack");
 // Try to separate blobs into individual chromophores
 run("Watershed", "stack");
