@@ -58,7 +58,10 @@ def batch_process(image_folder):
             os.makedirs(f"sporetraps/results/{release_name}", exist_ok=True)
             current_release = os.path.join(image_folder, release_name)
             # Iterate through the image folders
-            for trap_name in os.listdir(current_release):
+            for trap_name in sorted(
+                os.listdir(current_release),
+                key=lambda x: int(x[1:]),
+            ):
                 current_trap = os.path.join(
                     current_release, f"{trap_name}/{trap_name}_N0000"
                 )
