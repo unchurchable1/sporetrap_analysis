@@ -19,7 +19,7 @@ run("Invert LUTs");
 run("Subtract Background...", "rolling=10 light stack");
 
 // Generate a binary image from our image stack
-setThreshold(35, 255, "raw");
+setThreshold(50, 255, "raw");
 setOption("BlackBackground", false);
 run("Convert to Mask", "background=Light");
 run("Fill Holes", "stack");
