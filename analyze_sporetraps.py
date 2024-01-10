@@ -94,8 +94,7 @@ def csv_handler(filename):
             else:
                 # hit the next slice, store the count
                 image_data.append(counted)
-                # don't assume what the "next" slice is, a slice could be missing/empty
-                current_slice = int(row["Slice"])
+                current_slice += 1
                 if is_artifact(row):
                     counted = 0
                 else:
