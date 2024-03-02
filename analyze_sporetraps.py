@@ -32,7 +32,7 @@ import sys
 def analyze_sporetraps(filename):
     """Total the counts for each position and write the results to an output file."""
     release = os.path.basename(os.path.dirname(filename))
-    trap = os.path.basename(filename).split("_")[1]
+    trap = os.path.basename(filename).split("_")[1].split(".")[0]
     trap_results = csv_handler(filename)
     # make sure each trap has the correct number of images, 90 or 120 for a full release
     image_count = len(trap_results)
