@@ -16,7 +16,7 @@ For more details, please see the LICENSE file.
 ## Usage
 1) Place image albums into the "ECHO Images" directory.\
     Folders should retain the /Release #/Trap #/ structure, e.g.:\
-    ECHO Images/Release 1/T1/T1_N0000/ ...
+    ECHO Images/Release 1/T1/ ...
 2) Run batch_process.py to process the image albums.\
     Results will be compiled into an Excel spreadsheet in this directory.
 

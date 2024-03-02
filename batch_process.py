@@ -2,7 +2,7 @@
 #
 # This file is part of the sporetrap analysis scripts.
 #
-# Copyright (c) 2023 Jason Toney
+# Copyright (c) 2024 Jason Toney
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,13 +57,13 @@ def batch_process(image_folder):
             os.makedirs(f"sporetraps/images/{release_name}", exist_ok=True)
             os.makedirs(f"sporetraps/results/{release_name}", exist_ok=True)
             current_release = os.path.join(image_folder, release_name)
-            # Iterate through the image folders
+            # Iterate through the image folders; Eg. T1, T2, ...
             for trap_name in sorted(
                 os.listdir(current_release),
                 key=lambda x: int(x[1:]),
             ):
                 current_trap = os.path.join(
-                    current_release, f"{trap_name}/{trap_name}_N0000"
+                    current_release, trap_name
                 )
                 # Clean out unnecessary extraneous files
                 for file in os.listdir(current_trap):
@@ -71,10 +71,10 @@ def batch_process(image_folder):
                         os.remove(f"{current_trap}/{file}")
                 # Check if the album has already been processed
                 if os.path.exists(
-                    f"sporetraps/images/{release_name}/{trap_name}_N0000.tif"
+                    f"sporetraps/images/{release_name}/{trap_name}.tif"
                 ):
                     if os.path.exists(
-                        f"sporetraps/results/{release_name}/Results_{trap_name}_N0000.csv"
+                        f"sporetraps/results/{release_name}/Results_{trap_name}.csv"
                     ):
                         print(f"Skipping folder: {current_trap}, already processed.")
                         continue
@@ -95,21 +95,21 @@ def batch_process(image_folder):
                     print(f"Error executing the macro: {exception}")
 
                 # Relocate output files into their respective release folders
-                if os.path.exists(f"sporetraps/images/{trap_name}_N0000.tif"):
+                if os.path.exists(f"sporetraps/images/{trap_name}.tif"):
                     os.rename(
-                        f"sporetraps/images/{trap_name}_N0000.tif",
-                        f"sporetraps/images/{release_name}/{trap_name}_N0000.tif",
+                        f"sporetraps/images/{trap_name}.tif",
+                        f"sporetraps/images/{release_name}/{trap_name}.tif",
                     )
-                if os.path.exists(f"sporetraps/results/Results_{trap_name}_N0000.csv"):
+                if os.path.exists(f"sporetraps/results/Results_{trap_name}.csv"):
                     os.rename(
-                        f"sporetraps/results/Results_{trap_name}_N0000.csv",
-                        f"sporetraps/results/{release_name}/Results_{trap_name}_N0000.csv",
+                        f"sporetraps/results/Results_{trap_name}.csv",
+                        f"sporetraps/results/{release_name}/Results_{trap_name}.csv",
                     )
 
             # Process the ImageJ results
             for file in sorted(
                 os.listdir(f"sporetraps/results/{release_name}"),
-                key=lambda x: int(x.split("_")[1][1:]),
+                key=lambda x: int(x.split("_")[1].split(".")[0][1:])
             ):
                 if file.endswith(".csv"):
                     analyze_sporetraps.main(f"sporetraps/results/{release_name}/{file}")

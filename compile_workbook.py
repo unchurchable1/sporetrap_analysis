@@ -2,7 +2,7 @@
 #
 # This file is part of the sporetrap analysis scripts.
 #
-# Copyright (c) 2023 Jason Toney
+# Copyright (c) 2024 Jason Toney
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ def compile_workbook(workbook_file, csv_files):
     workbook.save(workbook_file)
 
     # Log the number of sheets in the workbook
-    print(f"The workbookbook contains {len(workbook.sheetnames)} sheets")
+    print(f"The workbook contains {len(workbook.sheetnames)} sheets")
 
 
 def main():
