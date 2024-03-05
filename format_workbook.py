@@ -34,67 +34,21 @@ def add_colors(sheet):
     value_color_mapping = [
         "FF0000",  # Red
         "00FF00",  # Green
-        "0000FF",  # Blue
-        "C0C0C0",  # Silver
-        "FFD700",  # Gold
     ]
 
     # Iterate through rows starting from the second row
     for row in sheet.iter_rows(min_row=2, min_col=2, max_col=2):
         for cell in row:
-            # Change the font color based on the value
+            # Change the font color based on position; 1-3 are green, 4 is red
             cell_value = int(cell.value)
-            font_color = value_color_mapping[cell_value - 1]
+            if cell_value == 4:
+                font_color = value_color_mapping[0]
+            else:
+                font_color = value_color_mapping[1]
             cell.font = Font(color=font_color)
-            # Use actual heights instead of relative positions
-            positions = [0, 0.5, 1.0, 1.5, 3.0]
+            # Use actual filter sizes instead of relative positions
+            positions = ["foil", "50 µm mesh", "150 µm mesh", "400 µm mesh"]
             cell.value = positions[cell_value - 1]
-
-
-def add_manual_counts(counts_file, sheet):
-    """docstring"""
-    # Load up the counts
-    matching_values = []
-    with open(counts_file, "r", encoding="utf-8", newline="") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            matching_values.append(row)
-
-    # Iterate through rows
-    for row in sheet.iter_rows(min_row=2, min_col=1, max_col=2):
-        trap_value = row[0].value
-        position_value = str(row[1].value)
-        # Add notations if available
-        for match_data in matching_values:
-            if (
-                match_data["Trap"] == trap_value
-                and match_data["Position"] == position_value
-            ):
-                sheet.cell(row=row[0].row, column=4, value=match_data["Microspheres"])
-
-
-def add_notations(notes_file, sheet):
-    """docstring"""
-    # Load up the notations
-    matching_values = []
-    with open(notes_file, "r", encoding="utf-8", newline="") as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            matching_values.append(row)
-
-    # Iterate through rows
-    for row in sheet.iter_rows(min_row=2, min_col=1, max_col=2):
-        trap_value = row[0].value
-        position_value = str(row[1].value)
-        # Add notations if available
-        for match_data in matching_values:
-            if (
-                match_data["Trap"] == trap_value
-                and match_data["Position"] == position_value
-            ):
-                sheet.cell(
-                    row=row[0].row, column=5, value=match_data["Notes"]
-                ).alignment = Alignment(wrap_text=True)
 
 
 def autosize_columns(sheet):
@@ -123,23 +77,11 @@ def format_workbook(filename):
     for sheet_name in workbook.sheetnames:
         sheet = workbook[sheet_name]
 
-        # Add manually counted microspheres to the workbook
-        counts_file = f"{os.path.dirname(__file__)}/counts/{sheet_name} - Red.csv"
-        if os.path.exists(counts_file):
-            print(f"Adding manually counted microspheres to sheet {sheet_name}")
-            add_manual_counts(counts_file, sheet)
-
-        # Add any relevant notations to the workbook
-        notes_file = f"{os.path.dirname(__file__)}/notes/{sheet_name}.csv"
-        if os.path.exists(notes_file):
-            print(f"Annotating sheet {sheet_name}")
-            add_notations(notes_file, sheet)
+        # Add colors to the position column
+        add_colors(sheet)
 
         # Auto-size columns to fit content
         autosize_columns(sheet)
-
-        # Add colors to the position column
-        add_colors(sheet)
 
     # Save the modified workbook in-place
     workbook.save(filename)

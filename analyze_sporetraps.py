@@ -43,15 +43,10 @@ def analyze_sporetraps(filename):
     headers = [
         "Trap",
         "Position",
-        "Microspheres (G)",
-        "Microspheres (R)",
-        "Notes",
+        "Microspheres",
     ]
     # Combine counts for each position
     image, position = 1, 1
-    # 4 position traps start at position 2
-    # if image_count == 12:
-    #     position = 2
     counted = 0
     for result in trap_results:
         counted += result

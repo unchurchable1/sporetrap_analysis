@@ -62,17 +62,13 @@ def batch_process(image_folder):
                 os.listdir(current_release),
                 key=lambda x: int(x[1:]),
             ):
-                current_trap = os.path.join(
-                    current_release, trap_name
-                )
+                current_trap = os.path.join(current_release, trap_name)
                 # Clean out unnecessary extraneous files
                 for file in os.listdir(current_trap):
                     if not (file.startswith("Tile0") and file.endswith(".tif")):
                         os.remove(f"{current_trap}/{file}")
                 # Check if the album has already been processed
-                if os.path.exists(
-                    f"sporetraps/images/{release_name}/{trap_name}.tif"
-                ):
+                if os.path.exists(f"sporetraps/images/{release_name}/{trap_name}.tif"):
                     if os.path.exists(
                         f"sporetraps/results/{release_name}/Results_{trap_name}.csv"
                     ):
@@ -109,7 +105,7 @@ def batch_process(image_folder):
             # Process the ImageJ results
             for file in sorted(
                 os.listdir(f"sporetraps/results/{release_name}"),
-                key=lambda x: int(x.split("_")[1].split(".")[0][1:])
+                key=lambda x: int(x.split("_")[1].split(".")[0][1:]),
             ):
                 if file.endswith(".csv"):
                     analyze_sporetraps.main(f"sporetraps/results/{release_name}/{file}")
