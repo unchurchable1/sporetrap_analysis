@@ -105,7 +105,7 @@ def batch_process(image_folder):
             # Process the ImageJ results
             for file in sorted(
                 os.listdir(f"sporetraps/results/{release_name}"),
-                key=lambda x: int(x.split("_")[1].split(".")[0][1:]),
+                key=lambda x: int(os.path.splitext(x)[0].split("_")[1][1:]),
             ):
                 if file.endswith(".csv"):
                     analyze_sporetraps.main(f"sporetraps/results/{release_name}/{file}")
