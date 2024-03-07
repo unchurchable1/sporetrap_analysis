@@ -107,8 +107,9 @@ def is_artifact(row):
     thresholds = [10, 50, 150, 400, 500]
     index = (int(row["Slice"]) - 1) // 30
     # ROI must have a minimum area and be within bounds of the targeted particle size
-    return float(row["Area"]) < pi * (thresholds[index] / 2) ** 2 or (
-        not thresholds[index] <= float(row["Feret"]) <= thresholds[index + 1]
+    return (
+        float(row["Area"]) < pi * (thresholds[index] / 2) ** 2
+        or not thresholds[index] <= float(row["Feret"]) <= thresholds[index + 1]
     )
 
 
