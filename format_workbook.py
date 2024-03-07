@@ -47,7 +47,7 @@ def add_colors(sheet):
                 font_color = value_color_mapping[1]
             cell.font = Font(color=font_color)
             # Use actual filter sizes instead of relative positions
-            positions = ["foil", "50 µm mesh", "150 µm mesh", "400 µm mesh"]
+            positions = ["Foil", "50 µm Mesh", "150 µm Mesh", "400 µm Mesh"]
             cell.value = positions[cell_value - 1]
 
 

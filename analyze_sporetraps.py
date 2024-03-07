@@ -26,6 +26,7 @@
 import csv
 import os
 import sys
+from math import pi
 
 
 # 30 images = 1 filter position in a trap, 4 filter positions per trap
@@ -102,9 +103,13 @@ def csv_handler(filename):
 # Filter out bad ROIs | Start here: 1 pixel = 8.067 µm^2, d = 4.017 µm
 def is_artifact(row):
     """Returns true if the ROI should not be counted."""
-    thresholds = [25, 50, 150, 400, 500]
+    # Microsphere diameter thresholds (feret diameter measured by ImageJ)
+    thresholds = [10, 50, 150, 400, 500]
     index = (int(row["Slice"]) - 1) // 30
-    return not thresholds[index] <= float(row["Feret"]) <= thresholds[index + 1]
+    # ROI must have a minimum area and be within bounds of the targeted particle size
+    return float(row["Area"]) < pi * (thresholds[index] / 2) ** 2 or (
+        not thresholds[index] <= float(row["Feret"]) <= thresholds[index + 1]
+    )
 
 
 def main(filename):
