@@ -99,10 +99,12 @@ def csv_handler(filename):
     return image_data
 
 
-# Filter out bad ROIs | Start here: 1 pixel = 7.84 um^2
+# Filter out bad ROIs | Start here: 1 pixel = 8.067 µm^2, d = 4.017 µm
 def is_artifact(row):
     """Returns true if the ROI should not be counted."""
-    return float(row["Area"]) <= 7.84 * 8
+    thresholds = [25, 50, 150, 400, 500]
+    index = (int(row["Slice"]) - 1) // 30
+    return not thresholds[index] <= float(row["Feret"]) <= thresholds[index + 1]
 
 
 def main(filename):
