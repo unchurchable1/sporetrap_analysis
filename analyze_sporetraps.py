@@ -81,20 +81,14 @@ def csv_handler(filename):
         csv_reader = csv.DictReader(csv_file, delimiter=",")
         image_data = []
         counted = 0
-        current_slice = 1
         for row in csv_reader:
             # calculate totals for each image
-            if int(row["Slice"]) == current_slice:
-                if not is_artifact(row):
-                    counted += 1
+            if int(row["Slice"]) == len(image_data) + 1:
+                counted += not is_artifact(row)
             else:
                 # hit the next slice, store the count
                 image_data.append(counted)
-                current_slice += 1
-                if is_artifact(row):
-                    counted = 0
-                else:
-                    counted = 1
+                counted = not is_artifact(row)
         # outside of the loop
         image_data.append(counted)
     return image_data
