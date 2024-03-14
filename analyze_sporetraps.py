@@ -29,15 +29,15 @@ import sys
 from math import pi
 
 
-# 30 images = 1 filter position in a trap, 4 filter positions per trap
+# 30 images = 1 filter position in a trap, 3 filter positions per trap
 def analyze_sporetraps(filename):
     """Total the counts for each position and write the results to an output file."""
     release = os.path.basename(os.path.dirname(filename))
     trap = os.path.splitext(os.path.basename(filename))[0].split("_")[1]
     trap_results = csv_handler(filename)
-    # make sure each trap has the correct number of images, 120 for a full release
+    # make sure each trap has the correct number of images, 90 for a full release
     image_count = len(trap_results)
-    if image_count != 120:
+    if image_count != 90:
         sys.exit(f"ERROR: {release}: Trap {trap} contains {image_count} images.")
     # Output data and file headers
     sporetrap_data = []
@@ -56,6 +56,8 @@ def analyze_sporetraps(filename):
             counted = 0
             position += 1
         image += 1
+    # add space for manual counts of red microspheres
+    sporetrap_data.append([trap, position, counted])
     # Write the results to the output file
     outfile = f"results/{release}.csv"
     write_headers = True
@@ -102,9 +104,8 @@ def is_artifact(row):
     min_round = 0.4
     min_solidity = 0.8
     # ROI must be within bounds of the targeted particle minimum size and shape
-    return (
-        float(row["Area"]) < pi * (min_diameter / 2) ** 2
-        or not (float(row["Round"]) > min_round and float(row["Solidity"]) > min_solidity)
+    return float(row["Area"]) < pi * (min_diameter / 2) ** 2 or not (
+        float(row["Round"]) > min_round and float(row["Solidity"]) > min_solidity
     )
 
 
