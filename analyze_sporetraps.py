@@ -97,13 +97,14 @@ def csv_handler(filename):
 # Filter out bad ROIs | Start here: 1 pixel = 8.067 µm^2, d = 4.017 µm
 def is_artifact(row):
     """Returns true if the ROI should not be counted."""
-    # Microsphere diameter thresholds (feret diameter measured by ImageJ)
-    thresholds = [10, 50, 150, 400, 500]
-    index = (int(row["Slice"]) - 1) // 30
-    # ROI must have a minimum area and be within bounds of the targeted particle size
+    # Microsphere minimum size and shape thresholds
+    min_diameter = 10
+    min_round = 0.4
+    min_solidity = 0.8
+    # ROI must be within bounds of the targeted particle minimum size and shape
     return (
-        float(row["Area"]) < pi * (thresholds[index] / 2) ** 2
-        or not thresholds[index] <= float(row["Feret"]) <= thresholds[index + 1]
+        float(row["Area"]) < pi * (min_diameter / 2) ** 2
+        or not (float(row["Round"]) > min_round and float(row["Solidity"]) > min_solidity)
     )
 
 
