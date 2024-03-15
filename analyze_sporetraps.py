@@ -57,7 +57,7 @@ def analyze_sporetraps(filename):
             position += 1
         image += 1
     # add spaces for manual counts of red microspheres
-    sporetrap_data.append([[trap, position, counted], [trap, position + 1, counted]])
+    sporetrap_data.extend([[trap, position, counted], [trap, position + 1, counted]])
     # Write the results to the output file
     outfile = f"results/{release}.csv"
     write_headers = True
