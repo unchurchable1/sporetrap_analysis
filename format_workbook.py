@@ -41,7 +41,7 @@ def add_colors(sheet):
         for cell in row:
             # Change the font color based on position; 1-3 are green, 4 is red
             cell_value = int(cell.value)
-            if cell_value == 4:
+            if cell_value > 2:
                 font_color = value_color_mapping[0]
             else:
                 font_color = value_color_mapping[1]
