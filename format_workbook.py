@@ -39,6 +39,28 @@ def add_filters(sheet):
             cell.value = positions[cell_value - 1]
 
 
+def add_manual_counts(counts_file, sheet):
+    """docstring"""
+    # Load up the counts
+    matching_values = []
+    with open(counts_file, "r", encoding="utf-8", newline="") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            matching_values.append(row)
+
+    # Iterate through rows
+    for row in sheet.iter_rows(min_row=2, min_col=1, max_col=2):
+        trap_value = row[0].value
+        position_value = str(row[1].value)
+        # Add notations if available
+        for match_data in matching_values:
+            if (
+                match_data["Trap"] == trap_value
+                and match_data["Position"] == position_value
+            ):
+                sheet.cell(row=row[0].row, column=4, value=match_data["Microspheres"])
+
+
 def autosize_columns(sheet):
     """docstring"""
     for column in sheet.columns:
@@ -64,6 +86,12 @@ def format_workbook(filename):
     # Iterate through each sheet in the workbook
     for sheet_name in workbook.sheetnames:
         sheet = workbook[sheet_name]
+
+        # Add manually counted Red microspheres to the workbook
+        counts_file = f"{os.path.dirname(__file__)}/counts/{sheet_name} - Red.csv"
+        if os.path.exists(counts_file):
+            print(f"Adding manually counted microspheres to sheet {sheet_name}")
+            add_manual_counts(counts_file, sheet)
 
         # Rename the position column with filter sizes
         add_filters(sheet)
