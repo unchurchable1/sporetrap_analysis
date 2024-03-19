@@ -60,6 +60,7 @@ def batch_process(image_folder):
             # Iterate through the image folders; Eg. T1, T2, ...
             for trap_name in sorted(
                 os.listdir(current_release),
+                key=lambda x: int(x[1]),
             ):
                 current_trap = os.path.join(current_release, trap_name)
                 # Clean out unnecessary extraneous files
