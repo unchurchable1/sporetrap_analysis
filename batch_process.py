@@ -58,10 +58,7 @@ def batch_process(image_folder):
             os.makedirs(f"sporetraps/results/{release_name}", exist_ok=True)
             current_release = os.path.join(image_folder, release_name)
             # Iterate through the image folders; Eg. T1, T2, ...
-            for trap_name in sorted(
-                os.listdir(current_release),
-                key=lambda x: int(x[1]),
-            ):
+            for trap_name in os.listdir(current_release):
                 current_trap = os.path.join(current_release, trap_name)
                 # Clean out unnecessary extraneous files
                 for file in os.listdir(current_trap):
@@ -103,10 +100,7 @@ def batch_process(image_folder):
                     )
 
             # Process the ImageJ results
-            for file in sorted(
-                os.listdir(f"sporetraps/results/{release_name}"),
-                key=lambda x: int(os.path.splitext(x)[0].split("_")[1][1]),
-            ):
+            for file in os.listdir(f"sporetraps/results/{release_name}"):
                 if file.endswith(".csv"):
                     analyze_sporetraps.main(f"sporetraps/results/{release_name}/{file}")
 
