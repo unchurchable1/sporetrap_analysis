@@ -28,25 +28,13 @@ import openpyxl
 from openpyxl.styles import Font, Alignment
 
 
-def add_colors(sheet):
+def add_filters(sheet):
     """docstring"""
-    # Create a list to map values to font colors
-    value_color_mapping = [
-        "FF0000",  # Red
-        "00FF00",  # Green
-    ]
-
     # Iterate through rows starting from the second row
     for row in sheet.iter_rows(min_row=2, min_col=2, max_col=2):
         for cell in row:
-            # Change the font color based on position; 1-3 are green, 4 is red
-            cell_value = int(cell.value)
-            if cell_value > 2:
-                font_color = value_color_mapping[0]
-            else:
-                font_color = value_color_mapping[1]
-            cell.font = Font(color=font_color)
             # Use actual filter sizes instead of relative positions
+            cell_value = int(cell.value)
             positions = ["Foil", "50 µm Mesh", "150 µm Mesh", "400 µm Mesh"]
             cell.value = positions[cell_value - 1]
 
@@ -77,8 +65,8 @@ def format_workbook(filename):
     for sheet_name in workbook.sheetnames:
         sheet = workbook[sheet_name]
 
-        # Add colors to the position column
-        add_colors(sheet)
+        # Rename the position column with filter sizes
+        add_filters(sheet)
 
         # Auto-size columns to fit content
         autosize_columns(sheet)

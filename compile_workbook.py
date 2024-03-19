@@ -73,7 +73,7 @@ def main():
     os.chdir(os.path.dirname(__file__))
 
     # output file
-    workbook_file = "Particle Release Counts.xlsx"
+    workbook_file = "Particle Release Counts - CST filters.xlsx"
 
     # Get list of all usable csv files in the results directory
     csv_files = []

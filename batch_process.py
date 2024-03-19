@@ -46,7 +46,7 @@ def batch_process(image_folder):
         for file in glob.glob(os.path.join(f"{os.path.dirname(__file__)}/results", "*"))
     ]
     # Also nuke old workbooks
-    workbook_file = f"{os.path.dirname(__file__)}/Particle Release Counts.xlsx"
+    workbook_file = f"{os.path.dirname(__file__)}/Particle Release Counts - CST filters.xlsx"
     if os.path.exists(workbook_file):
         os.remove(workbook_file)
     # Iterate through the release folders
@@ -60,7 +60,6 @@ def batch_process(image_folder):
             # Iterate through the image folders; Eg. T1, T2, ...
             for trap_name in sorted(
                 os.listdir(current_release),
-                key=lambda x: int(x[1:]),
             ):
                 current_trap = os.path.join(current_release, trap_name)
                 # Clean out unnecessary extraneous files
@@ -105,7 +104,7 @@ def batch_process(image_folder):
             # Process the ImageJ results
             for file in sorted(
                 os.listdir(f"sporetraps/results/{release_name}"),
-                key=lambda x: int(os.path.splitext(x)[0].split("_")[1][1:]),
+                key=lambda x: int(os.path.splitext(x)[0].split("_")[1][1]),
             ):
                 if file.endswith(".csv"):
                     analyze_sporetraps.main(f"sporetraps/results/{release_name}/{file}")
