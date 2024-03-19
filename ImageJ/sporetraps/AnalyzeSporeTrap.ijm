@@ -31,7 +31,7 @@ saveAs("tif", "sporetraps/images/" + File.getName(getTitle()));
 run("Set Measurements...", "area centroid perimeter fit shape feret's stack redirect=None decimal=3");
 run("Analyze Particles...", "circularity=0.00-1.00 show=Overlay display exclude include add stack");
 roiManager("Show None");
-saveAs("Results", "sporetraps/results/Results_" + File.getNameWithoutExtension(getTitle()) + ".csv");
+saveAs("Results", "sporetraps/results/" + File.getNameWithoutExtension(getTitle()) + ".csv");
 
 // Close ImageJ window when running in batches
 if (closeWindow) {

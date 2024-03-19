@@ -46,7 +46,9 @@ def batch_process(image_folder):
         for file in glob.glob(os.path.join(f"{os.path.dirname(__file__)}/results", "*"))
     ]
     # Also nuke old workbooks
-    workbook_file = f"{os.path.dirname(__file__)}/Particle Release Counts - CST filters.xlsx"
+    workbook_file = (
+        f"{os.path.dirname(__file__)}/Particle Release Counts - CST filters.xlsx"
+    )
     if os.path.exists(workbook_file):
         os.remove(workbook_file)
     # Iterate through the release folders
@@ -67,7 +69,7 @@ def batch_process(image_folder):
                 # Check if the album has already been processed
                 if os.path.exists(f"sporetraps/images/{release_name}/{trap_name}.tif"):
                     if os.path.exists(
-                        f"sporetraps/results/{release_name}/Results_{trap_name}.csv"
+                        f"sporetraps/results/{release_name}/{trap_name}.csv"
                     ):
                         print(f"Skipping folder: {current_trap}, already processed.")
                         continue
@@ -93,10 +95,10 @@ def batch_process(image_folder):
                         f"sporetraps/images/{trap_name}.tif",
                         f"sporetraps/images/{release_name}/{trap_name}.tif",
                     )
-                if os.path.exists(f"sporetraps/results/Results_{trap_name}.csv"):
+                if os.path.exists(f"sporetraps/results/{trap_name}.csv"):
                     os.rename(
-                        f"sporetraps/results/Results_{trap_name}.csv",
-                        f"sporetraps/results/{release_name}/Results_{trap_name}.csv",
+                        f"sporetraps/results/{trap_name}.csv",
+                        f"sporetraps/results/{release_name}/{trap_name}.csv",
                     )
 
             # Process the ImageJ results
