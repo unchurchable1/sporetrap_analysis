@@ -29,21 +29,21 @@ import sys
 from math import pi
 
 
-# 30 images = 1 filter position in a trap, 4 positions per trap, 2 imaged & counted
+# 30 images = 1 filter position in a trap, 4 positions per trap, 3 imaged & counted
 def analyze_sporetraps(filename):
     """Total the counts for each position and write the results to an output file."""
     release = os.path.basename(os.path.dirname(filename))
     trap = os.path.splitext(os.path.basename(filename))[0].split("_")[1]
     trap_results = csv_handler(filename)
-    # make sure each trap has the correct number of images, 60 for a full release
+    # make sure each trap has the correct number of images, 90 for a full release
     image_count = len(trap_results)
-    if image_count != 60:
+    if image_count != 90:
         sys.exit(f"ERROR: {release}: Trap {trap} contains {image_count} images.")
     # Output data and file headers
     sporetrap_data = []
     headers = [
-        "Trap",
         "Position",
+        "Filter",
         "Microspheres",
     ]
     # Combine counts for each position
